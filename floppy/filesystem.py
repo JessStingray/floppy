@@ -2,7 +2,13 @@ import enum
 import struct
 
 class Filesystem(enum.Enum):
-    FAT12 = 1
+    FAT12   = 1
+    FAT16   = 2 # Rare, but has happened
+    CPM     = 3 # CP/M Filesystem
+    UFS     = 4 # Apparently used by Sun?
+    HFS     = 5 # Used by Macs. Unsupported until I can get my hands on one.
+    AMIGA   = 6 # Also known as FFS.
+
 
 class FAT12:
     def __init__(self, image):
@@ -29,6 +35,7 @@ class FAT12:
             descriptor,             # Media descriptor. Check Wikipedia for details
             sectors_per_fat,        # Logical sectors per FAT.
         ) = struct.unpack("<HBHBHHBH", mbr[0x0B:0x18])
+        # H = unsigned short, B = unsigned char. Noting because I always bloody forget.
 
 
     def _read_fat(self):
